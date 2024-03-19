@@ -7,63 +7,57 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Game {
-	private static List<Player> players = new ArrayList<Player>();;
+	private static List<Player> players = new ArrayList<Player>();
 	private static Scanner in = new Scanner(System.in);
 	private static Map<String, Set<Bet>> playerBetsMap = new HashMap<>();
 	private static Set<Integer> bet;
+	private static int option;
 
 	public static void main(String[] args) {
-		
-		
-		startGame();
+
+		System.out.println("Bem vindo ao jogo da fortuna!");
+		System.out.println("(1) Começar Novo Jogo");
+		System.out.println("(2) Listar Apostas");
+
+		option = in.nextInt();
+		switch (option) {
+
+			case 1:
+				Game.startGame();
+				break;
+
+			case 2:
+				// listGameBets();
+		}
 	}
 
 	// INICIA O JOGO
 	public static void startGame() {
-		System.out.println("$-------------JOGO DA MEGA SENA-------------$");
+
+		System.out.println("$-------------JOGO DA FORTUNA-------------$");
+		System.out.println("Iniciando novo jogo...\n");
+
 		Round round1 = new Round();
 
-		System.out.println("\n");
-		System.out.println("Bem vindo ao jogo da fortuna!");
-		System.out.println("Digite 1 para começar um novo jogo ou 2 para sair: ");
-		int option = in.nextInt();
-
-		if (option == 1) {
-			System.out.println("Iniciando novo jogo!\n");
-			System.out.println("Você ja possui cadastro? (1) Sim (2) Não");
-			int option2 = in.nextInt();
-
-			if (option2 == 1) {
-				System.out.println("Erro! Apenas um cadastro por edicao permitido, aguarde e boa sorte!");
-
-			} else if (option2 == 2) {
-				insertNewPlayer();
-
-			} else {
-				System.out.println("Opção inválida!");
-
-			}
-
-		} else if (option == 2) {
-			System.out.println("Fechando Aplicativo!");
-			System.exit(0);
-
-		} else {
-			System.out.println("Opção inválida!");
-		}
-		in.close();
+		insertNewPlayer();
 	}
 
 	// ADICIONA NOVO JOGADOR
 	public static void insertNewPlayer() {
 		// Limpeza do buffer
 		in.nextLine();
-		
-		System.out.println("Digite o nome do jogador: \n");
+
+		System.out.println("Digite o nome do jogador: ");
 		String name = in.nextLine();
 
-		System.out.println("Digite o cpf do jogador: \n");
+		System.out.println("Digite o cpf do jogador: ");
 		String cpf = in.nextLine();
+
+		if (players.contains(cpf)) {
+
+			System.out.println("Erro! Player já existente.");
+			return;
+		}
 
 		Player player = new Player(name, cpf);
 		players.add(player);
@@ -71,9 +65,7 @@ public class Game {
 		System.out.println("Jogador cadastrado com sucesso!");
 		System.out.println("Agora, vamos fazer a(s) aposta(s)!\n");
 		addBet(cpf);
-		
-		
-		
+
 		System.out.println("Voce deseja cadastrar mais jogadores? (1) Sim (2) Não");
 		int opcao = in.nextInt();
 		if (opcao == 1) {
@@ -88,10 +80,11 @@ public class Game {
 	// ADICIONA APOSTA
 	public static void addBet(String cpf) {
 		Set<Bet> playerBets = playerBetsMap.getOrDefault(cpf, new TreeSet<>());
+		Set<Integer> manualBet = new TreeSet<>();
 
 		System.out.println("Digite o número correspondente à sua escolha! \n");
 		System.out.println("Modo de aposta: ");
-	System.out.println("1 - Modo Surpresinha");
+		System.out.println("1 - Modo Surpresinha");
 		System.out.println("2 - Manual");
 
 		int choice = in.nextInt();
@@ -107,19 +100,30 @@ public class Game {
 		} else if (choice == 2) {
 			System.out.println("Você escolheu o Modo Manual!");
 			System.out.println("Insira 5 números de 1 a 50: ");
-			Set<Integer> manualBet = new TreeSet<>();
-			for (int i = 0; i < 5; i++) {
-				if (choice > 50) {
+
+			while (manualBet.size() != 5) {
+				int manualNumber = in.nextInt();
+
+				if (manualNumber > 50 || manualNumber < 1) {
 					System.out.println("Número inválido! Insira um número de 1 a 50: ");
-					i--;
 				} else {
-					choice = in.nextInt();
-					manualBet.add(choice);
+					manualBet.add(manualNumber);
 				}
 			}
+
 			playerBets.add(new Bet(manualBet));
 			System.out.println("Seus números são: ");
 			System.out.println(manualBet.toString());
+
+			// for (int i = 0; manualBet.size()!=5; i++) {
+			// if (choice > 50 || choice < 1) {
+			// System.out.println("Número inválido! Insira um número de 1 a 50: ");
+			// //i--;
+			// } else {
+			// choice = in.nextInt();
+			// manualBet.add(choice);
+			// }
+			// }
 
 		} else {
 			System.out.println("Escolha inválida. Por favor, escolha 1 ou 2.");
