@@ -36,8 +36,6 @@ public class Game {
 		System.out.println("$-------------JOGO DA FORTUNA-------------$\n");
 		System.out.println("Iniciando novo jogo...");
 
-		Round round1 = new Round();
-
 		insertNewPlayer();
 	}
 
@@ -45,9 +43,9 @@ public class Game {
 	public static void insertNewPlayer() {
 		String name = "";
 		String cpf = "";
-		//LIMPA BUFFER
+		// LIMPA BUFFER
 		in.nextLine();
-		
+
 		while (true) {
 
 			System.out.println("Digite o nome do jogador: ");
@@ -82,21 +80,7 @@ public class Game {
 			insertNewPlayer();
 		} else if (opcao == 2) {
 			System.out.println("Obrigado por se cadastrar!\n");
-
-			System.out.println("O que deseja fazer agora?");
-			System.out.println("(1) Listar Apostas");
-			System.out.print("(2) Finalizar apostas e executar o sorteio\n");
-
-			option = in.nextInt();
-
-			switch (option) {
-				case 1:
-					listGameBets();
-					break;
-
-				case 2:
-					// executeDraw();
-			}
+			listOrExecute();
 
 		} else {
 			System.out.println("Opção inválida!");
@@ -168,6 +152,51 @@ public class Game {
 		}
 	}
 
+	// LISTA OU EXECUTA O SORTEIO
+	public static void listOrExecute() {
+		System.out.println("O que deseja fazer agora?");
+		System.out.println("(1) Listar Apostas");
+		System.out.println("(2) Finalizar apostas e executar o sorteio");
+		System.out.println("(3) Adicionar mais jogadores");
+
+		option = in.nextInt();
+
+		switch (option) {
+			case 1:
+				listGameBets();
+				break;
+			case 2:
+				confirmExecute();
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				listOrExecute();
+		}
+	}
+
+	// CONFIRMA EXECUÇÃO DO SORTEIO
+	public static void confirmExecute() {
+		System.out.println("\n");
+		System.out.println("Você escolheu executar o sorteio.");
+		System.out.println("Confirmar? (1) Sim (2) Não");
+		option = in.nextInt();
+		switch (option) {
+
+			case 1:
+				executeDraw(players);
+				break;
+
+			case 2:
+				listOrExecute();
+				break;
+
+			default:
+				System.out.println("Opção inválida!");
+				confirmExecute();
+
+		}
+	}
+
 	// LISTA TODAS AS APOSTAS
 	public static void listGameBets() {
 		System.out.println("Listando apostas...\n");
@@ -186,6 +215,18 @@ public class Game {
 			}
 
 		}
+	}
+
+	public static void executeDraw(List<Player> players) {
+		Round round1 = new Round();
+		round1.generateWinnerNumbers();
+		System.out.println("Números sorteados: " + round1.getWinNumbers() + "\n");
+		round1.checkWinners(players);
+
+		// round1.addOneMoreWinnernumber();
+		// round1.getWinnerNumbers();
+		// round1.getroundId();
+		// round1.toString();
 	}
 
 	public Player getWinners() {
