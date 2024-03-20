@@ -33,9 +33,8 @@ public class Game {
 
 	// INICIA O JOGO
 	public static void startGame() {
-
 		System.out.println("$-------------JOGO DA FORTUNA-------------$\n");
-		System.out.println("Iniciando novo jogo...\n");
+		System.out.println("Iniciando novo jogo...");
 
 		Round round1 = new Round();
 
@@ -44,43 +43,52 @@ public class Game {
 
 	// ADICIONA NOVO JOGADOR
 	public static void insertNewPlayer() {
-		// Limpeza do buffer
+		String name = "";
+		String cpf = "";
+		//LIMPA BUFFER
 		in.nextLine();
-
-		System.out.println("Digite o nome do jogador: ");
-		String name = in.nextLine();
-
-		System.out.println("Digite o cpf do jogador: ");
-		String cpf = in.nextLine();
-
 		
-		if (players.contains(cpf)) {
+		while (true) {
 
-			System.out.println("Erro! Player já existente.");
-			return;
-		} else {
-			players.add(new Player(cpf, name));
+			System.out.println("Digite o nome do jogador: ");
+			name = in.nextLine();
+
+			System.out.println("Digite o cpf do jogador: ");
+			cpf = in.nextLine();
+
+			// Verifica CPF Duplicata
+			boolean isDuplicate = false;
+			for (Player player : players) {
+				if (player.getCpf().equals(cpf)) {
+					System.out.println("\n");
+					System.out.println("Erro. Player já existente! Tente novamente.\n");
+					isDuplicate = true;
+					break;
+				}
+			}
+			if (!isDuplicate) {
+				break;
+			}
 		}
-
-		
-
+		players.add(new Player(cpf, name));
 		System.out.println("Jogador cadastrado com sucesso!");
 		System.out.println("Agora, vamos fazer a(s) aposta(s)!\n");
 		addBet(cpf);
 
-		System.out.println("Voce deseja cadastrar mais jogadores? (1) Sim (2) Não\n");
+		System.out.println("\n");
+		System.out.println("Voce deseja cadastrar mais jogadores? (1) Sim (2) Não");
 		int opcao = in.nextInt();
 		if (opcao == 1) {
 			insertNewPlayer();
 		} else if (opcao == 2) {
 			System.out.println("Obrigado por se cadastrar!\n");
-			
+
 			System.out.println("O que deseja fazer agora?");
 			System.out.println("(1) Listar Apostas");
-			System.out.print("(2) Finalizar apostas e executar o sorteio");
+			System.out.print("(2) Finalizar apostas e executar o sorteio\n");
 
 			option = in.nextInt();
-			
+
 			switch (option) {
 				case 1:
 					listGameBets();
@@ -121,14 +129,14 @@ public class Game {
 
 			while (manualBet.size() != 5) {
 				int manualNumber = in.nextInt();
-				
+
 				for (int number : manualBet) {
 					if (number == manualNumber) {
 						System.out.println("Número já escolhido! Insira outro número: ");
 						manualNumber = in.nextInt();
 					}
 				}
-				
+
 				if (manualNumber > 50 || manualNumber < 1) {
 					System.out.println("Número inválido! Insira um número de 1 a 50: ");
 				} else {
@@ -140,12 +148,13 @@ public class Game {
 			System.out.println("Seus números são: ");
 			System.out.println(manualBet.toString());
 
-
 		} else {
 			System.out.println("Escolha inválida. Por favor, escolha 1 ou 2.");
 			addBet(cpf);
 		}
 		playerBetsMap.put(cpf, playerBets);
+
+		System.out.println("\n");
 
 		System.out.println("Gostaria de fazer mais uma aposta? (1) Sim (2) Não");
 		int opcao = in.nextInt();
@@ -159,21 +168,22 @@ public class Game {
 		}
 	}
 
+	// LISTA TODAS AS APOSTAS
 	public static void listGameBets() {
 		System.out.println("Listando apostas...\n");
 		for (String cpf : playerBetsMap.keySet()) {
 			for (Player player : players) {
-					if (player.getCpf().equals(cpf)) {
-						System.out.println("|---------------------------|");
-						System.out.println(" Jogador: " + player.getName());
-						System.out.println(" CPF: " + cpf);
-						Set<Bet> bets = playerBetsMap.get(cpf);
-						for (Bet bet : bets) {
-							System.out.println(" Aposta: " + bet.getNumbers());
-						}
+				if (player.getCpf().equals(cpf)) {
+					System.out.println("|---------------------------|");
+					System.out.println(" Jogador: " + player.getName());
+					System.out.println(" CPF: " + cpf);
+					Set<Bet> bets = playerBetsMap.get(cpf);
+					for (Bet bet : bets) {
+						System.out.println(" Aposta: " + bet.getNumbers());
+						return;
 					}
 				}
-			
+			}
 
 		}
 	}
