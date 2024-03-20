@@ -24,6 +24,7 @@ public class Round {
 	public void addOneMoreWinnerNumber() {
 		Random random = new Random();
 		winNumbers.add(random.nextInt(50) + 1);
+
 	}
 
 	public Set<Integer> getWinNumbers() {
@@ -35,26 +36,26 @@ public class Round {
 			boolean hasWinner = false;
 
 			for (Player player : players) {
-				if (player.getBets().contains(winNumbers)) {
-					player.setIsWinner(true);
-					hasWinner = true;
-					break;
+				if (player != null) {
+					for (Bet bet : player.getBets()) {
+						if (bet.getNumbers().equals(winNumbers)) {
+							player.setIsWinner(true);
+							hasWinner = true;
+						}
+					}
+				}
+				if (!hasWinner) {
+					addOneMoreWinnerNumber();
 				}
 			}
-			if (!hasWinner) {
-				addOneMoreWinnerNumber();
-				break;
-			}
 		}
-		//Game.endMatch(players);
+		// Game.endMatch(players);
 	}
 
 	public static Set<Integer> numbersGenerator() {
 		Random random = new Random();
 		Set<Integer> numbers = new HashSet<>();
-		// for (int i = 0; i < 5; i++) {
-		// numbers.add(random.nextInt(50) + 1);
-		// }
+
 		while (numbers.size() != 5) {
 			numbers.add(random.nextInt(50) + 1);
 		}

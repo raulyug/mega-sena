@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -11,6 +12,7 @@ public class Player {
 		this.cpf = cpf;
 		this.name = name;
 		this.isWinner = false;
+		this.bets = new ArrayList<Bet>();
 	}
 
 	public String getCpf() {

@@ -6,12 +6,12 @@ public class Bet implements Comparable<Bet> {
 
 	private int betId;
 	private Set<Integer> betNumbers = new TreeSet<>();
-	private String cpfPlayer;
+	
 
 	public Bet(Set<Integer> betNumbers) {
 		this.betId = (betId == 0) ? this.betId = 1000 : betId + 1;
 		this.betNumbers = betNumbers;
-		this.cpfPlayer = cpfPlayer;
+		
 	}
 
 	public int getbetId() {
