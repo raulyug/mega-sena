@@ -214,11 +214,11 @@ public class Game {
 					Set<Bet> bets = playerBetsMap.get(cpf);
 					for (Bet bet : bets) {
 						System.out.println(" Aposta: " + bet.getNumbers());
-						return;
+
 					}
 				}
 			}
-
+			listOrExecute();
 		}
 	}
 
@@ -252,6 +252,20 @@ public class Game {
 		}
 	}
 
+
+
+	// CALCULA O VALOR DO PREMIO
+	public static void calculatePrize(){
+		double totalPrize = (Bet.getValue() + Bet.getQuantity())/2;
+
+		if(countBetWinners(getPlayers()) > 0){
+			System.out.println("O valor do prêmio é: " + totalPrize);
+		}
+		else{
+			System.out.println("Nenhum vencedor encontrado. O ganhador teria sido premiado com: R$" + totalPrize);
+		}
+	}
+
 	// ADICIONA MAIS UM NÚMERO VENCEDOR
 	public static void addOneMoreWinnerNumber() {
 		Random random = new Random();
@@ -276,7 +290,7 @@ public class Game {
 			System.out.println("Nenhum vencedor encontrado." + "\n");
 		}
 		showAllNumbersAndFrequency();
-
+		calculatePrize();
 	}
 
 	// CONTADOR DE APOSTAS VENCEDORAS
