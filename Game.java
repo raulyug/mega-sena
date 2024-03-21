@@ -169,6 +169,10 @@ public class Game {
 			case 2:
 				confirmExecute();
 				break;
+
+			case 3:
+				insertNewPlayer();
+
 			default:
 				System.out.println("Opção inválida!");
 				listOrExecute();
@@ -256,13 +260,11 @@ public class Game {
 
 		checkWinners(getPlayers());
 
-		// System.out.println("Nenhum vencedor encontrado.");
-		// endMatch(players);
 	}
 
 	// FIM DO JOGO
 	public static void endMatch(List<Player> players) {
-System.out.println("-------------------FIM DO JOGO-------------------");
+		System.out.println("-------------------FIM DO JOGO-------------------");
 		System.out.println("Números sorteados: " + Round.getWinNumbers());
 		System.out.println("Total de rodadas: " + Round.getRoundId());
 		System.out.println("Quantidade de apostas vencedoras: " + countBetWinners(players) + "\n");
@@ -271,7 +273,7 @@ System.out.println("-------------------FIM DO JOGO-------------------");
 			System.out.println("Aposta(s) vencedora(s): ");
 			getWinnerPlayersAndBet();
 		} else {
-			System.out.println("Nenhum vencedor encontrado."+ "\n");
+			System.out.println("Nenhum vencedor encontrado." + "\n");
 		}
 		showAllNumbersAndFrequency();
 
