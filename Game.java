@@ -20,7 +20,7 @@ public class Game {
 		// Mostra o Menu de Bem-vindo
 		System.out.println("Bem vindo ao jogo da fortuna!");
 		System.out.println("(1) Começar Novo Jogo");
-		System.out.println("(2) Listar Apostas");
+		System.out.println("(2) Encerrar Programa");
 
 		option = in.nextInt();
 		switch (option) {
@@ -28,9 +28,14 @@ public class Game {
 			case 1:
 				startGame();
 				break;
-
 			case 2:
-				listGameBets();
+				System.out.println("Encerrando.");
+				break;
+
+			default:
+				System.out.println("Opção inválida!");
+				System.out.println("Reinicie o programa!");
+				break;
 		}
 	}
 
