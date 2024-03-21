@@ -4,17 +4,21 @@ import java.util.TreeSet;
 
 public class Bet implements Comparable<Bet> {
 
-	private int betId;
+	private static int betId ;
 	private Set<Integer> betNumbers = new TreeSet<>();
 	private static double value=5;
 	private static int quantity=1;
 	
 	public Bet(Set<Integer> betNumbers) {
-		this.betId = (betId == 0) ? this.betId = 1000 : betId + 1;
+		this.betId = 1000;
 		this.betNumbers = betNumbers;
 		quantity++;
 	}
 
+	public static void betIdIncrement() {
+		betId++;
+	}
+	
 	public static int getQuantity() {
 		return quantity;
 	}

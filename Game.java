@@ -13,6 +13,7 @@ public class Game {
 	private static Map<String, Set<Bet>> playerBetsMap = new HashMap<>();
 	private static Set<Integer> bet;
 	private static int option;
+	private static Player newPlayer;
 
 	public static void main(String[] args) {
 
@@ -42,6 +43,7 @@ public class Game {
 
 	// ADICIONA NOVO JOGADOR
 	public static void insertNewPlayer() {
+
 		String name = "";
 		String cpf = "";
 		// LIMPA BUFFER
@@ -69,7 +71,8 @@ public class Game {
 				break;
 			}
 		}
-		players.add(new Player(cpf, name));
+		newPlayer = new Player(cpf, name);
+		players.add(newPlayer);
 		System.out.println("Jogador cadastrado com sucesso!");
 		System.out.println("Agora, vamos fazer a(s) aposta(s)!\n");
 		addBet(cpf);
@@ -90,7 +93,6 @@ public class Game {
 
 	// ADICIONA APOSTA
 	public static void addBet(String cpf) {
-		Set<Bet> playerBets = playerBetsMap.getOrDefault(cpf, new TreeSet<>());
 		Set<Integer> manualBet = new TreeSet<>();
 
 		System.out.println("Digite o número correspondente à sua escolha! \n");
@@ -105,7 +107,8 @@ public class Game {
 			System.out.println("Gerando números aleatórios...");
 			System.out.println("Seus números são: ");
 			bet = Round.numbersGenerator();
-			playerBets.add(new Bet(bet));
+			newPlayer.addNewBet(new Bet(bet));
+			Bet.betIdIncrement();
 			System.out.println(bet.toString());
 
 		} else if (choice == 2) {
@@ -129,15 +132,15 @@ public class Game {
 				}
 			}
 
-			playerBets.add(new Bet(manualBet));
+			newPlayer.addNewBet(new Bet(manualBet));
 			System.out.println("Seus números são: ");
 			System.out.println(manualBet.toString());
+			Bet.betIdIncrement();
 
 		} else {
 			System.out.println("Escolha inválida. Por favor, escolha 1 ou 2.");
 			addBet(cpf);
 		}
-		playerBetsMap.put(cpf, playerBets);
 
 		System.out.println("\n");
 
@@ -205,21 +208,16 @@ public class Game {
 	// LISTA TODAS AS APOSTAS
 	public static void listGameBets() {
 		System.out.println("Listando apostas...\n");
-		for (String cpf : playerBetsMap.keySet()) {
-			for (Player player : players) {
-				if (player.getCpf().equals(cpf)) {
-					System.out.println("|---------------------------|");
-					System.out.println(" Jogador: " + player.getName());
-					System.out.println(" CPF: " + cpf);
-					Set<Bet> bets = playerBetsMap.get(cpf);
-					for (Bet bet : bets) {
-						System.out.println(" Aposta: " + bet.getNumbers());
+		for (Player player : players) {
+			System.out.println("\n");
+			System.out.println("------------------------");
+			System.out.println("Jogador: " + player.getName());
+			for (Bet bet : player.getBets()) {
+				System.out.println("Aposta "+bet.getbetId()+":" + bet.getNumbers());
 
-					}
-				}
 			}
-			listOrExecute();
 		}
+		listOrExecute();
 	}
 
 	// EXECUTAR SORTEIO
@@ -252,16 +250,13 @@ public class Game {
 		}
 	}
 
-
-
 	// CALCULA O VALOR DO PREMIO
-	public static void calculatePrize(){
-		double totalPrize = (Bet.getValue() + Bet.getQuantity())/2;
+	public static void calculatePrize() {
+		double totalPrize = (Bet.getValue() + Bet.getQuantity()) / 2;
 
-		if(countBetWinners(getPlayers()) > 0){
+		if (countBetWinners(getPlayers()) > 0) {
 			System.out.println("O valor do prêmio é: " + totalPrize);
-		}
-		else{
+		} else {
 			System.out.println("Nenhum vencedor encontrado. O ganhador teria sido premiado com: R$" + totalPrize);
 		}
 	}
@@ -310,23 +305,20 @@ public class Game {
 
 	// MOSTRE TODOS OS NUMEROS SORTEADOS
 	public static void showAllNumbersAndFrequency() {
-		Map<Integer, Integer> numberFrequency = new HashMap<>(); // armazena a frequência de cada número.
-		for (Set<Bet> bets : playerBetsMap.values()) { // cada valor é um CONJUNTO de apostas.
-			for (Bet bet : bets) { // iterando sobre CADA aposta.
-				for (int number : bet.getNumbers()) { // iterando sobre cada NÚMERO na aposta.
-					numberFrequency.put(number, numberFrequency.getOrDefault(number, 0) + 1); // Contando frequencia de
-																								// cada numero
+		System.out.println("Números apostados e suas frequências: ");
+		Map<Integer, Integer> numbersFrequency = new HashMap<>();
+		for (Player player : players) {
+			for (Bet bet : player.getBets()) {
+				for (int number : bet.getNumbers()) {
+					if (numbersFrequency.containsKey(number)) {
+						numbersFrequency.put(number, numbersFrequency.get(number) + 1);
+					} else {
+						numbersFrequency.put(number, 1);
+					}
 				}
 			}
 		}
-
-		System.out.println("Número - Frequência");
-		for (Map.Entry<Integer, Integer> par : numberFrequency.entrySet()) { // Loop que itera sobre cada par do mapa
-																				// numberFrequency
-
-			System.out.println(par.getKey() + " - " + par.getValue()); //
-
-		}
+		
 
 	}
 
