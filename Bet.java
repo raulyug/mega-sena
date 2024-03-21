@@ -11,7 +11,6 @@ public class Bet implements Comparable<Bet> {
 	public Bet(Set<Integer> betNumbers) {
 		this.betId = (betId == 0) ? this.betId = 1000 : betId + 1;
 		this.betNumbers = betNumbers;
-		
 	}
 
 	public int getbetId() {

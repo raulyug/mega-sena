@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -217,24 +218,136 @@ public class Game {
 		}
 	}
 
+	// EXECUTAR SORTEIO
 	public static void executeDraw(List<Player> players) {
 		Round round1 = new Round();
 		round1.generateWinnerNumbers();
-		System.out.println("Números sorteados: " + round1.getWinNumbers() + "\n");
-		round1.checkWinners(players);
-
-		// round1.addOneMoreWinnernumber();
-		// round1.getWinnerNumbers();
-		// round1.getroundId();
-		// round1.toString();
+		System.out.println("Números sorteados: " + Round.getWinNumbers() + "\n");
+		checkWinners(players);
 	}
 
-	public Player getWinners() {
+	// VERIFICA SE HÁ VENCEDORES
+	public static void checkWinners(List<Player> players) {
+
+		boolean hasWinner = false;
+
+		for (Player player : players) {
+			if (player != null && !player.getIsWinner()) {
+				for (Bet bet : player.getBets()) {
+					if (bet.getNumbers().equals(Round.winNumbers)) {
+						player.setIsWinner(true);
+						hasWinner = true;
+					}
+				}
+			}
+		}
+		if (!hasWinner && Round.getRoundId() < 26) {
+			addOneMoreWinnerNumber();
+		} else {
+			endMatch(players);
+		}
+	}
+
+	// ADICIONA MAIS UM NÚMERO VENCEDOR
+	public static void addOneMoreWinnerNumber() {
+		Random random = new Random();
+		Round.idIncrement();
+		Round.winNumbers.add(random.nextInt(50) + 1);
+
+		checkWinners(getPlayers());
+
+		// System.out.println("Nenhum vencedor encontrado.");
+		// endMatch(players);
+	}
+
+	// FIM DO JOGO
+	public static void endMatch(List<Player> players) {
+System.out.println("-------------------FIM DO JOGO-------------------");
+		System.out.println("Números sorteados: " + Round.getWinNumbers());
+		System.out.println("Total de rodadas: " + Round.getRoundId());
+		System.out.println("Quantidade de apostas vencedoras: " + countBetWinners(players) + "\n");
+
+		if (countBetWinners(players) > 0) {
+			System.out.println("Aposta(s) vencedora(s): ");
+			getWinnerPlayersAndBet();
+		} else {
+			System.out.println("Nenhum vencedor encontrado."+ "\n");
+		}
+		showAllNumbersAndFrequency();
+
+	}
+
+	// CONTADOR DE APOSTAS VENCEDORAS
+	public static int countBetWinners(List<Player> players) {
+		int count = 0;
+		for (Player player : players) {
+			if (player.getIsWinner() == true) {
+				for (Bet bet : player.getBets()) {
+					if (bet.getNumbers().equals(Round.getWinNumbers())) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	// MOSTRE TODOS OS NUMEROS SORTEADOS
+	public static void showAllNumbersAndFrequency() {
+		Map<Integer, Integer> numberFrequency = new HashMap<>(); // armazena a frequência de cada número.
+		for (Set<Bet> bets : playerBetsMap.values()) { // cada valor é um CONJUNTO de apostas.
+			for (Bet bet : bets) { // iterando sobre CADA aposta.
+				for (int number : bet.getNumbers()) { // iterando sobre cada NÚMERO na aposta.
+					numberFrequency.put(number, numberFrequency.getOrDefault(number, 0) + 1); // Contando frequencia de
+																								// cada numero
+				}
+			}
+		}
+
+		System.out.println("Número - Frequência");
+		for (Map.Entry<Integer, Integer> par : numberFrequency.entrySet()) { // Loop que itera sobre cada par do mapa
+																				// numberFrequency
+
+			System.out.println(par.getKey() + " - " + par.getValue()); //
+
+		}
+
+	}
+
+	// MOSTRE NOME DO VENCEDOR E SUA APOSTA
+	public static void getWinnerPlayersAndBet() {
+		// Round round = new Round();
+		for (Player player : players) {
+			if (player.getIsWinner() == true) {
+				for (Bet bet : player.getBets()) {
+					if (bet.getNumbers().equals(Round.getWinNumbers())) {
+						System.out.println("\nPlayer: " + player.getName() + "Aposta: " + player.getBets());
+					}
+				}
+			} else {
+				System.out.println("Nenhum vencedor encontrado.");
+			}
+		}
+
+	}
+
+	// RETORNA A LISTA DE VENCEDORES
+	public List<Player> getWinners(List<Player> players) {
+
+		for (Player player : players) {
+			List<Player> winners = new ArrayList<Player>();
+			if (player.getIsWinner() == true) {
+				winners.add(player);
+			}
+			return winners;
+		}
+
 		return null;
 	}
 
-	public Player getPlayers() {
-		return null;
+	// RETORNA A LISTA DE JOGADORES
+	public static List<Player> getPlayers() {
+		return players;
 	}
 
 }

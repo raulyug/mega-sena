@@ -4,16 +4,16 @@ import java.util.Random;
 import java.util.Set;
 
 public class Round {
-	private Set<Integer> winNumbers = null;
-	private int roundId = 0;
+	static Set<Integer> winNumbers = null;
+	private static int roundId = 0;
 
 	public Round() {
 		this.winNumbers = null;
 		roundId++;
 	}
 
-	public int getroundId() {
-		return this.roundId;
+	public static int getRoundId() {
+		return roundId;
 	}
 
 	public Set<Integer> generateWinnerNumbers() {
@@ -21,35 +21,13 @@ public class Round {
 		return winNumbers;
 	}
 
-	public void addOneMoreWinnerNumber() {
-		Random random = new Random();
-		winNumbers.add(random.nextInt(50) + 1);
-
-	}
-
-	public Set<Integer> getWinNumbers() {
+	
+	public static Set<Integer> getWinNumbers() {
 		return winNumbers;
 	}
 
-	public void checkWinners(List<Player> players) {
-		while (true) {
-			boolean hasWinner = false;
-
-			for (Player player : players) {
-				if (player != null) {
-					for (Bet bet : player.getBets()) {
-						if (bet.getNumbers().equals(winNumbers)) {
-							player.setIsWinner(true);
-							hasWinner = true;
-						}
-					}
-				}
-				if (!hasWinner) {
-					addOneMoreWinnerNumber();
-				}
-			}
-		}
-		// Game.endMatch(players);
+	public static void idIncrement() {
+		roundId++;
 	}
 
 	public static Set<Integer> numbersGenerator() {
@@ -65,6 +43,6 @@ public class Round {
 
 	@Override
 	public String toString() {
-		return "Round " + getroundId() + " Winner Numbers=" + winNumbers;
+		return "Round " + getRoundId() + " Winner Numbers=" + winNumbers;
 	}
 }
