@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+//Classe para ordenar jogadores alfabeticamente
 public class PlayerSorter {
 
     public static void sortByPlayerName(List<Player> players) {

@@ -16,26 +16,32 @@ public class Player {
 		this.playerBets = new ArrayList<>();
 	}
 
+	// Retorna cpf do jogador
 	public String getCpf() {
 		return this.cpf;
 	}
 
+	// Seta se o jogador é vencedor
 	public void setIsWinner(boolean isWinner) {
 		this.isWinner = isWinner;
 	}
 
+	// Retorna se o jogador é vencedor
 	public boolean getIsWinner() {
 		return this.isWinner;
 	}
 
+	// Retorna nome do jogador
 	public String getName() {
 		return this.name;
 	}
 
+	// Retorna apostas do jogador
 	public List<Bet> getBets() {
 		return this.playerBets;
 	}
 
+	// Adiciona nova aposta
 	public void addNewBet(Bet bet) {
 		System.out.println("Adicionou!");
 

@@ -17,7 +17,7 @@ public class Game {
 	private static int betCounter = 1000;
 
 	public static void main(String[] args) {
-
+		// Mostra o Menu de Bem-vindo
 		System.out.println("Bem vindo ao jogo da fortuna!");
 		System.out.println("(1) Começar Novo Jogo");
 		System.out.println("(2) Listar Apostas");
@@ -26,7 +26,7 @@ public class Game {
 		switch (option) {
 
 			case 1:
-				Game.startGame();
+				startGame();
 				break;
 
 			case 2:
@@ -34,7 +34,8 @@ public class Game {
 		}
 	}
 
-	// INICIA O JOGO
+	// INICIA JOGO
+	// Printa na tela que esta iniciando jogo e chama metodo Inserir Player
 	public static void startGame() {
 		System.out.println("$-------------JOGO DA FORTUNA-------------$\n");
 		System.out.println("Iniciando novo jogo...");
@@ -43,6 +44,19 @@ public class Game {
 	}
 
 	// ADICIONA NOVO JOGADOR
+	// Enquanto o CPF for duplicado, ele pedira para inserir os dados novamente,
+	// pois não aceitara CPF duplicado. Se o CPF nao for duplicado, ele adiciona
+	// o novo jogador e chama o metodo addBet.
+
+	// Após chamar o metodo addBet, ele pergunta se deseja cadastrar mais jogadores.
+	// Pois dentro do addBet
+	// é chamado o metodo insertNewPlayer, que pergunta se deseja cadastrar mais
+	// jogadores.
+
+	// Se a opção for 1, ele chama o metodo insertNewPlayer, se a opção for 2, ele
+	// printa na tela "Obrigado por se cadastrar!"
+	// e chama o metodo listOrExecute.
+
 	public static void insertNewPlayer() {
 
 		String name = "";
@@ -65,15 +79,16 @@ public class Game {
 					System.out.println("\n");
 					System.out.println("Erro. Player já existente! Tente novamente.\n");
 					isDuplicate = true;
-					break;
+
 				}
 			}
 			if (!isDuplicate) {
+
 				break;
 			}
 		}
-		newPlayer = new Player(cpf, name);
-		players.add(newPlayer);
+		newPlayer = new Player(cpf, name); // Cria novo jogador
+		players.add(newPlayer); // Adiciona jogador na lista de jogadores
 		System.out.println("Jogador cadastrado com sucesso!");
 		System.out.println("Agora, vamos fazer a(s) aposta(s)!\n");
 		addBet(cpf);
@@ -93,6 +108,19 @@ public class Game {
 	}
 
 	// ADICIONA APOSTA
+	// Pede para o jogador escolher o modo de aposta, se for 1, ele chama o metodo
+	// numbersGenerator
+	// e printa na tela os numeros gerados. Se for 2, ele pede para o jogador
+	// inserir 5 numeros de 1 a 50.
+	// Se o numero for < 50 ou < 1, ele pede para inserir um numero valido.
+	// Se o numero ja foi escolhido, ele pede para inserir outro numero.
+	// Se for valido, é adicionado na lista de numeros escolhidos e incrementa o
+	// contador de apostas.
+	// Após criar a aposta, ele pergunta se deseja fazer mais uma aposta. Se a opção
+	// for 1, ele chama o metodo addBet
+	// se a opção for 2, ele printa na tela "Obrigado por apostar!".
+	// Após isso, ele chama o metodo listOrExecute.
+
 	public static void addBet(String cpf) {
 		Set<Integer> manualBet = new TreeSet<>();
 
@@ -157,6 +185,15 @@ public class Game {
 	}
 
 	// LISTA OU EXECUTA O SORTEIO
+	// Pede para o jogador escolher entre listar apostas, finalizar apostas e
+	// executar o sorteio ou adicionar mais jogadores.
+	// Se a opcao for 1, ele chama o metodo listGameBets, se a opcao for 2, ele
+	// chama o metodo confirmExecute.
+	// Se a opcao for 3, ele chama o metodo insertNewPlayer. Se a opcao for
+	// diferente de 1, 2 ou 3, ele printa na tela "Opcao inválida!"
+	// e se a opcao for invalida, ele atua como metodo recurssivo, se chamando e
+	// listando novamente as opcoes.
+
 	public static void listOrExecute() {
 		System.out.println("O que deseja fazer agora?");
 		System.out.println("(1) Listar Apostas");
@@ -183,6 +220,11 @@ public class Game {
 	}
 
 	// CONFIRMA EXECUÇÃO DO SORTEIO
+	// Pede para o jogador confirmar se deseja executar o sorteio.
+	// Se a opcao for 1, ele chama o metodo executeDraw, se a opcao for 2, ele chama
+	// o metodo listOrExecute.
+	// Se a opcao for diferente de 1 ou 2, ele printa na tela "Opcao inválida!" e se
+	// a opcao for invalida, ele atua como metodo recurssivo,
 	public static void confirmExecute() {
 		System.out.println("\n");
 		System.out.println("Você escolheu executar o sorteio.");
@@ -206,6 +248,10 @@ public class Game {
 	}
 
 	// LISTA TODAS AS APOSTAS
+	// Printa na tela para cada jogador o seu nome, entra em um for onde busca todas
+	// as apostas do tipo Objeto e busca dentro dos objetos
+	// os numeros apostados e printa todos eles na tela junto com o betId de cada
+	// aposta.
 	public static void listGameBets() {
 		System.out.println("Listando apostas...\n");
 		for (Player player : players) {
@@ -221,6 +267,8 @@ public class Game {
 	}
 
 	// EXECUTAR SORTEIO
+	// Gera os numeros vencedores, printa na tela os numeros vencedores e chama o
+	// metodo checkWinners.
 	public static void executeDraw(List<Player> players) {
 		Round round1 = new Round();
 		round1.generateWinnerNumbers();
@@ -229,6 +277,9 @@ public class Game {
 	}
 
 	// VERIFICA SE HÁ VENCEDORES
+	// Verifica se ha vencedores, se houver, chama o metodo endMatch, se nao houver,
+	// chama o metodo addOneMoreWinnerNumber. Ele fara isso ate alcançar 26 rodadas
+	// se nao achar vencedores, e entao chamara o metodo endMatch.
 	public static void checkWinners(List<Player> players) {
 
 		boolean hasWinner = false;
@@ -251,6 +302,10 @@ public class Game {
 	}
 
 	// CALCULA O VALOR DO PREMIO
+	// Calcula o valor do premio, se houver vencedores, printa na tela o valor do
+	// premio,
+	// se nao houver, notifica na tela que nenhum vencedor foi encontrado. E a
+	// estimativa do premio.
 	public static void calculatePrize() {
 		double totalPrize = (Bet.getValue() + Bet.getQuantity()) / 2;
 
@@ -262,6 +317,9 @@ public class Game {
 	}
 
 	// ADICIONA MAIS UM NÚMERO VENCEDOR
+	// Se nao houver vencedores, este metodo adiciona mais um numero para a lista de
+	// numeros vencedores e chama o metodo checkWinners
+	// para verificar se ha vencedores.
 	public static void addOneMoreWinnerNumber() {
 		Random random = new Random();
 		Round.idIncrement();
@@ -272,6 +330,12 @@ public class Game {
 	}
 
 	// FIM DO JOGO
+	// Printa na tela os numeros sorteados, o total de rodadas, a quantidade de
+	// apostas vencedoras e se houver vencedores, printa na tela
+	// o nome do vencedor e sua aposta. Se nao houver vencedores, printa na tela
+	// "Nenhum vencedor encontrado."
+	// Chama o metodo showAllNumbersAndFrequency e o metodo calculatePrize.
+
 	public static void endMatch(List<Player> players) {
 		System.out.println("-------------------FIM DO JOGO-------------------");
 		System.out.println("Números sorteados: " + Round.getWinNumbers());
@@ -289,6 +353,7 @@ public class Game {
 	}
 
 	// CONTADOR DE APOSTAS VENCEDORAS
+	// Conta a quantidade de apostas vencedoras.
 	public static int countBetWinners(List<Player> players) {
 		int count = 0;
 		for (Player player : players) {
@@ -304,6 +369,7 @@ public class Game {
 	}
 
 	// MOSTRE TODOS OS NUMEROS SORTEADOS
+	// e suas frequencias.
 	public static void showAllNumbersAndFrequency() {
 		System.out.println("Números apostados e suas frequências: ");
 		Map<Integer, Integer> numbersFrequency = new HashMap<>();
@@ -321,7 +387,8 @@ public class Game {
 
 	}
 
-	// MOSTRE NOME DO VENCEDOR E SUA APOSTA
+	// MOSTRA NOME DO VENCEDOR E SUA APOSTA
+	// ou informa que nenhum vencedor foi encontrado.
 	public static void getWinnerPlayersAndBet() {
 		// Round round = new Round();
 		for (Player player : players) {
@@ -339,6 +406,7 @@ public class Game {
 	}
 
 	// RETORNA A LISTA DE VENCEDORES
+	// ou null se nenhum vencedor foi encontrado.
 	public List<Player> getWinners(List<Player> players) {
 
 		for (Player player : players) {

@@ -12,23 +12,28 @@ public class Round {
 		roundId++;
 	}
 
+	// Retorna id do round
 	public static int getRoundId() {
 		return roundId;
 	}
 
+	// Gera numeros vencedores com o metodo numbersGenerator
 	public Set<Integer> generateWinnerNumbers() {
 		winNumbers = numbersGenerator();
 		return winNumbers;
 	}
 
+	// Retorna numeros vencedores
 	public static Set<Integer> getWinNumbers() {
 		return winNumbers;
 	}
 
+	// Incrementa id do round
 	public static void idIncrement() {
 		roundId++;
 	}
 
+	// Gera numeros aleatorios e retorna um(a) set(lista) de 5 numeros
 	public static Set<Integer> numbersGenerator() {
 		Random random = new Random();
 		Set<Integer> numbers = new HashSet<>();
