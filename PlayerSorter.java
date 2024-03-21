@@ -3,7 +3,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PlayerSorter {
-    
+
     public static void sortByPlayerName(List<Player> players) {
         Collections.sort(players, new Comparator<Player>() {
             @Override

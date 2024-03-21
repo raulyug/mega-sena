@@ -14,6 +14,7 @@ public class Game {
 	private static Set<Integer> bet;
 	private static int option;
 	private static Player newPlayer;
+	private static int betCounter = 1000;
 
 	public static void main(String[] args) {
 
@@ -107,8 +108,8 @@ public class Game {
 			System.out.println("Gerando números aleatórios...");
 			System.out.println("Seus números são: ");
 			bet = Round.numbersGenerator();
-			newPlayer.addNewBet(new Bet(bet));
-			Bet.betIdIncrement();
+			newPlayer.addNewBet(new Bet(bet, betCounter++));
+
 			System.out.println(bet.toString());
 
 		} else if (choice == 2) {
@@ -132,10 +133,9 @@ public class Game {
 				}
 			}
 
-			newPlayer.addNewBet(new Bet(manualBet));
+			newPlayer.addNewBet(new Bet(manualBet, betCounter++));
 			System.out.println("Seus números são: ");
 			System.out.println(manualBet.toString());
-			Bet.betIdIncrement();
 
 		} else {
 			System.out.println("Escolha inválida. Por favor, escolha 1 ou 2.");
@@ -213,7 +213,7 @@ public class Game {
 			System.out.println("------------------------");
 			System.out.println("Jogador: " + player.getName());
 			for (Bet bet : player.getBets()) {
-				System.out.println("Aposta "+bet.getbetId()+":" + bet.getNumbers());
+				System.out.println("Aposta " + bet.getbetId() + ":" + bet.getNumbers());
 
 			}
 		}
@@ -318,7 +318,6 @@ public class Game {
 				}
 			}
 		}
-		
 
 	}
 

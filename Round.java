@@ -21,7 +21,6 @@ public class Round {
 		return winNumbers;
 	}
 
-	
 	public static Set<Integer> getWinNumbers() {
 		return winNumbers;
 	}
