@@ -1,4 +1,4 @@
-# MegaSena
+# Lottery Game
 
 • Overview
 
